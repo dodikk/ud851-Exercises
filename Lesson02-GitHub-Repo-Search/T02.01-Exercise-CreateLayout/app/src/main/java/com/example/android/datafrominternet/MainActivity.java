@@ -29,11 +29,15 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.URL;
 
+import com.example.android.datafrominternet.utilities.DownloadRepoListTask;
 import com.example.android.datafrominternet.utilities.NetworkUtils;
+import com.example.android.datafrominternet.utilities.RepoListDownloadListener;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements RepoListDownloadListener {
 
     // TODO (26) Create an EditText variable called mSearchBoxEditText
 
@@ -44,36 +48,26 @@ public class MainActivity extends AppCompatActivity {
     private TextView lblUrlDisplay = null;
     private TextView lblSearechResults = null;
     private EditText slQueryInput = null;
-    private Button   btnSubmit = null;
+    private Button btnSubmit = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         this.lblUrlDisplay = (TextView) findViewById(R.id.lblQueryUrl);
         this.lblSearechResults = (TextView) findViewById(R.id.lblRawSearchResult);
         this.slQueryInput = (EditText) findViewById(R.id.slQueryInput);
-        this.btnSubmit = (Button)findViewById(R.id.btnSubmit);
+        this.btnSubmit = (Button) findViewById(R.id.btnSubmit);
 
-        this.disableNetworkMainThreadAssertionsForPrototyping();
+        // this.disableNetworkMainThreadAssertionsForPrototyping();
 
-        this.btnSubmit.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
+        this.btnSubmit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 // TODO: how to not leak ??
-                performSearchSync();
+                performSearchAsync();
             }
         });
-    }
-
-    private void disableNetworkMainThreadAssertionsForPrototyping()
-    {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
     }
 
     private void performSearchSync()
@@ -82,15 +76,28 @@ public class MainActivity extends AppCompatActivity {
         this.updateSearchUrlLabel(txtUserInput);
 
 
-
         String txtDownloaded = this.implPerformSearchSync(txtUserInput);
         this.lblSearechResults.setText(txtDownloaded);
-    }
+
+    } // func performSearchSync()
+
+
+    // @MainThread
+    public void onRepoListLoaded(String rawResult)
+    {
+        this.lblSearechResults.setText(rawResult);
+
+    } // func RepoListDownloadListener.onRepoListLoaded()
+
 
     private void performSearchAsync()
     {
+        String txtUserInput = this.slQueryInput.getText().toString();
 
+        this.updateSearchUrlLabel(txtUserInput);
 
+        DownloadRepoListTask asyncOp = new DownloadRepoListTask(this);
+        asyncOp.execute(txtUserInput);
     }
 
     private void updateSearchUrlLabel(String txtUserInput )
