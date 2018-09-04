@@ -15,16 +15,23 @@
  */
 package com.example.android.datafrominternet.utilities;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Scanner;
 
 /**
  * These utilities will be used to communicate with the network.
  */
-public class NetworkUtils {
+public class NetworkUtils
+{
 
     final static String GITHUB_BASE_URL =
             "https://api.github.com/search/repositories";
@@ -44,9 +51,32 @@ public class NetworkUtils {
      * @param githubSearchQuery The keyword that will be queried for.
      * @return The URL to use to query the weather server.
      */
-    public static URL buildUrl(String githubSearchQuery) {
-        return null;
-    }
+    public static URL buildUrl(String githubSearchQuery)
+    {
+        Uri.Builder uriBuilder = Uri.parse(GITHUB_BASE_URL).buildUpon();
+        uriBuilder =
+                uriBuilder.appendQueryParameter("q", githubSearchQuery)
+                          .appendQueryParameter(PARAM_SORT, sortBy);
+
+        Uri builtUrl = uriBuilder.build();
+        String txtBuiltUrl = builtUrl.toString();
+
+        try
+        {
+            URL result = new URL(txtBuiltUrl);
+
+            Log.i("build url", "[x] Success : " + result.toString());
+            return result;
+        }
+        catch (MalformedURLException ex)
+        {
+            Log.w("build url", "[-] Fail : " + ex.toString());
+            ex.printStackTrace();
+
+            return null;
+        }
+
+    } // func buildUrl()
 
     /**
      * This method returns the entire result from the HTTP response.
@@ -55,22 +85,60 @@ public class NetworkUtils {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static String getResponseFromHttpUrl(URL url) throws IOException
+    {
+        if (null == url)
+        {
+            Log.w("download", "[x] Fail : the url is null");
+            return "";
+        }
+
+        Log.i("download", "[BEGIN] downloading");
+
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
+        Log.i("download", "\t [x] HttpURLConnection created...");
+
+        try
+        {
             InputStream in = urlConnection.getInputStream();
+            Log.i("download", "\t [x] InputStream created...");
+
 
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
+            Log.i("download", "\t [x] Scanner created...");
+
 
             boolean hasInput = scanner.hasNext();
-            if (hasInput) {
+            Log.i("download", "\t [x] scanner.hasNext()");
+
+
+            if (hasInput)
+            {
+                Log.i("download", "has input");
                 return scanner.next();
-            } else {
+            }
+            else
+            {
+                Log.i("download", "no input");
                 return null;
             }
-        } finally {
+        }
+        catch (IOException ex)
+        {
+            Log.i("download", "[!] exception : " + ex.toString());
+
+            throw ex;
+        }
+        finally
+        {
+            Log.i("download", "[END] downloading");
             urlConnection.disconnect();
         }
-    }
-}
+    } // func getResponseFromHttpUrl()
+
+} // class NetworkUtils
+
+
+
+
