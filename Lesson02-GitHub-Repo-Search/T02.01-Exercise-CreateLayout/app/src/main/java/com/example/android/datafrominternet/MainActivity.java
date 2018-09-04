@@ -16,7 +16,6 @@
 package com.example.android.datafrominternet;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
@@ -24,16 +23,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import android.view.View;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URL;
 
-import com.example.android.datafrominternet.utilities.DownloadRepoListTask;
-import com.example.android.datafrominternet.utilities.NetworkUtils;
-import com.example.android.datafrominternet.utilities.RepoListDownloadListener;
-
-import org.w3c.dom.Text;
+import com.example.android.datafrominternet.github_query.network.DownloadRepoListTask;
+import com.example.android.datafrominternet.github_query.network.NetworkUtils;
+import com.example.android.datafrominternet.github_query.network.RepoListDownloadListener;
 
 public class MainActivity
         extends AppCompatActivity
