@@ -1,4 +1,4 @@
-package com.example.android.datafrominternet.utilities;
+package com.example.android.datafrominternet.github_query.network;
 
 import android.os.AsyncTask;
 
