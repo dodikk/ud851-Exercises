@@ -118,7 +118,7 @@ public class RepoListVM
         return this;
     }
 
-    public ILoadingState getLoading()
+    public ILoadingState getLoadingState()
     {
         // TODO: extract dedicated structures when things get too complicated
         return this;

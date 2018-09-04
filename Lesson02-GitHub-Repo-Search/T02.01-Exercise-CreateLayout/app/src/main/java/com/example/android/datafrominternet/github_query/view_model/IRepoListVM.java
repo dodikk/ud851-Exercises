@@ -12,7 +12,7 @@ public interface IRepoListVM
 
 
     IRepoListState getRepoListState();
-    ILoadingState  getLoading();
+    ILoadingState  getLoadingState();
 
 
     void setSearchQuery(String userInput);
