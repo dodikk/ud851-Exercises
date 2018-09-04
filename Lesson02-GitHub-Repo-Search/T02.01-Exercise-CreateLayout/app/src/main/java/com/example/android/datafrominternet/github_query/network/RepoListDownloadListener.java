@@ -4,4 +4,9 @@ public interface RepoListDownloadListener
 {
     void onRepoListLoaded(String rawResult);
 
+    // TODO: pick a reasonable error class.
+    // maybe exception copy ???
+    //
+    void onRepoListLoadFailed(Object error);
+
 }
