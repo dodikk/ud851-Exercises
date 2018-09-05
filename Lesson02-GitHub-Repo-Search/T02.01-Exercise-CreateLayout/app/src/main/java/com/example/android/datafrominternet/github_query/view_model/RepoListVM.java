@@ -44,7 +44,7 @@ public class RepoListVM
     public void onRepoListLoadFailed(Object error)
     {
         this._result = null;
-        this._errorText = "Something went wrong";
+        this._errorText = "Something went wrong"; // TODO: localize
 
         this._isLoading = false;
         this._loader = null;
@@ -88,6 +88,8 @@ public class RepoListVM
 
         this._isLoading = true;
 
+        // TODO: inject task builder for better testability
+        //
         DownloadRepoListTask loader = new DownloadRepoListTask(this);
         this._loader = loader;
 

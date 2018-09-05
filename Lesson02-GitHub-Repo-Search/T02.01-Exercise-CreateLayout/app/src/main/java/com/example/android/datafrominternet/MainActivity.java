@@ -23,20 +23,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import android.view.View;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.net.URL;
 
-import com.example.android.datafrominternet.github_query.network.DownloadRepoListTask;
 import com.example.android.datafrominternet.github_query.network.NetworkUtils;
-import com.example.android.datafrominternet.github_query.network.RepoListDownloadListener;
 import com.example.android.datafrominternet.github_query.view_model.ILoadingState;
 import com.example.android.datafrominternet.github_query.view_model.IRepoListState;
 import com.example.android.datafrominternet.github_query.view_model.IRepoListVM;
@@ -50,10 +45,10 @@ public class MainActivity
             IRepoListVMDelegate
 {
 
-    private TextView    lblUrlDisplay     = null;
-    private TextView    lblSearechResults = null;
-    private EditText    slQueryInput      = null;
-    private ProgressBar progressIndicator = null;
+    private TextView    _lblUrlDisplay     = null;
+    private TextView    _lblSearechResults = null;
+    private EditText    _slQueryInput      = null;
+    private ProgressBar _progressIndicator = null;
 
 
     private IRepoListVM _viewModel = null;
@@ -96,13 +91,13 @@ public class MainActivity
         // http://chintanrathod.com/show-hide-soft-keyboard-programmatically-in-android/
         //
 
-        this.slQueryInput.clearFocus();
+        this._slQueryInput.clearFocus();
 
         InputMethodManager imm =
             (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         imm.hideSoftInputFromWindow(
-                this.slQueryInput.getWindowToken(),
+                this._slQueryInput.getWindowToken(),
                 0);
     }
 
@@ -112,17 +107,16 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.lblUrlDisplay     = (TextView   ) findViewById(R.id.lblQueryUrl       );
-        this.lblSearechResults = (TextView   ) findViewById(R.id.lblRawSearchResult);
-        this.slQueryInput      = (EditText   ) findViewById(R.id.slQueryInput      );
-        this.progressIndicator = (ProgressBar) findViewById(R.id.progress_indicator);
+        this._lblUrlDisplay     = (TextView   ) findViewById(R.id.lblQueryUrl       );
+        this._lblSearechResults = (TextView   ) findViewById(R.id.lblRawSearchResult);
+        this._slQueryInput      = (EditText   ) findViewById(R.id.slQueryInput      );
+        this._progressIndicator = (ProgressBar) findViewById(R.id.progress_indicator);
 
         RepoListVM viewModel = new RepoListVM();
         viewModel.setDelegate(this);
         this._viewModel = viewModel;
 
 
-        // this.disableNetworkMainThreadAssertionsForPrototyping();
 
 //        this.btnSubmit.setOnClickListener(new View.OnClickListener()
 //        {
@@ -177,7 +171,8 @@ public class MainActivity
                 );
 
         alert.show();
-    }
+
+    } // func renderError()
 
     private void renderResult()
     {
@@ -186,40 +181,21 @@ public class MainActivity
         String maybeResultText = this._viewModel.getRepoListState().getResultOptional();
         assert null != maybeResultText;
 
-        this.lblSearechResults.setText(maybeResultText);
-    }
+        this._lblSearechResults.setText(maybeResultText);
+
+    } // func renderResult()
 
     private void showLoadingIndicator()
     {
-        // TODO: replace stub wiwh proper layout
-        //
-        Toast alert =
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Start Loading",
-                        Toast.LENGTH_SHORT
-                );
+        this._progressIndicator.setVisibility(ProgressBar.VISIBLE);
 
-
-        alert.show();
-    }
+    } // func showLoadingIndicator()
 
     private void hideLoadingIndicator()
     {
-        // TODO: replace stub wiwh proper layout
-        //
+        this._progressIndicator.setVisibility(ProgressBar.GONE);
 
-        Toast alert =
-            Toast.makeText(
-                    getApplicationContext(),
-                    "STOP Loading",
-                    Toast.LENGTH_SHORT
-            );
-
-
-        alert.show();
-
-    }
+    } // func hideLoadingIndicator()
 
 
     public void onRepoListLoaded()
@@ -230,7 +206,7 @@ public class MainActivity
 
     private void performSearchAsync()
     {
-        String txtUserInput = this.slQueryInput.getText().toString();
+        String txtUserInput = this._slQueryInput.getText().toString();
         this.updateSearchUrlLabel(txtUserInput);
 
         this._viewModel.setSearchQuery(txtUserInput);
@@ -246,12 +222,13 @@ public class MainActivity
 
         if (null != url)
         {
-            this.lblUrlDisplay.setText(url.toString());
+            this._lblUrlDisplay.setText(url.toString());
         }
         else
         {
             Log.w("network", "url building failed 1");
         }
-    }
 
-}
+    } // func updateSearchUrlLabel()
+
+} // class MainActivity
