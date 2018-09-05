@@ -18,6 +18,9 @@ package com.example.android.datafrominternet;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -47,9 +50,42 @@ public class MainActivity
     private TextView lblUrlDisplay     = null;
     private TextView lblSearechResults = null;
     private EditText slQueryInput      = null;
-    private Button   btnSubmit         = null;
+
+
 
     private IRepoListVM _viewModel = null;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInlater = getMenuInflater();
+        menuInlater.inflate(R.menu.search_menu, menu);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.search_menu_button:
+            {
+                this.slQueryInput.clearFocus();
+                this.performSearchAsync();
+                return true;
+            }
+
+            default:
+            {
+                return super.onOptionsItemSelected(item);
+            }
+
+        } // switch
+
+    } // func onOptionsItemSelected()
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,7 +96,6 @@ public class MainActivity
         this.lblUrlDisplay     = (TextView) findViewById(R.id.lblQueryUrl);
         this.lblSearechResults = (TextView) findViewById(R.id.lblRawSearchResult);
         this.slQueryInput      = (EditText) findViewById(R.id.slQueryInput);
-        this.btnSubmit         = (Button) findViewById(R.id.btnSubmit);
 
 
         RepoListVM viewModel = new RepoListVM();
@@ -70,14 +105,14 @@ public class MainActivity
 
         // this.disableNetworkMainThreadAssertionsForPrototyping();
 
-        this.btnSubmit.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                // TODO: how to not leak ??
-                performSearchAsync();
-            }
-        });
+//        this.btnSubmit.setOnClickListener(new View.OnClickListener()
+//        {
+//            public void onClick(View v)
+//            {
+//                // TODO: how to not leak ??
+//                performSearchAsync();
+//            }
+//        });
     }
 
 

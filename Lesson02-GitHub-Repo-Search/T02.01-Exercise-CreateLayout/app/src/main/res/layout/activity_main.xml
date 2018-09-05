@@ -50,16 +50,6 @@
         android:imeOptions="actionDone"
         />
 
-    <Button
-        android:id="@+id/btnSubmit"
-        android:text="Submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"
-        />
-
-
     <TextView
         android:id="@+id/lblQueryUrl"
         android:layout_width="wrap_content"
