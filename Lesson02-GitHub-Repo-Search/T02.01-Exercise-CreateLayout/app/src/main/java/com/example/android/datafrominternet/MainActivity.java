@@ -15,12 +15,14 @@
  */
 package com.example.android.datafrominternet;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -73,7 +75,7 @@ public class MainActivity
         {
             case R.id.search_menu_button:
             {
-                this.slQueryInput.clearFocus();
+                this.hideKeyboard();
                 this.performSearchAsync();
                 return true;
             }
@@ -86,6 +88,22 @@ public class MainActivity
         } // switch
 
     } // func onOptionsItemSelected()
+
+
+    private void hideKeyboard()
+    {
+        // http://chintanrathod.com/show-hide-soft-keyboard-programmatically-in-android/
+        //
+
+        this.slQueryInput.clearFocus();
+
+        InputMethodManager imm =
+            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        imm.hideSoftInputFromWindow(
+                this.slQueryInput.getWindowToken(),
+                0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
