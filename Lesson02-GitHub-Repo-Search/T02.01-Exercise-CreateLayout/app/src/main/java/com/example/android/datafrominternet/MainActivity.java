@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import android.view.View;
@@ -49,10 +50,10 @@ public class MainActivity
             IRepoListVMDelegate
 {
 
-    private TextView lblUrlDisplay     = null;
-    private TextView lblSearechResults = null;
-    private EditText slQueryInput      = null;
-
+    private TextView    lblUrlDisplay     = null;
+    private TextView    lblSearechResults = null;
+    private EditText    slQueryInput      = null;
+    private ProgressBar progressIndicator = null;
 
 
     private IRepoListVM _viewModel = null;
@@ -111,10 +112,10 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.lblUrlDisplay     = (TextView) findViewById(R.id.lblQueryUrl);
-        this.lblSearechResults = (TextView) findViewById(R.id.lblRawSearchResult);
-        this.slQueryInput      = (EditText) findViewById(R.id.slQueryInput);
-
+        this.lblUrlDisplay     = (TextView   ) findViewById(R.id.lblQueryUrl       );
+        this.lblSearechResults = (TextView   ) findViewById(R.id.lblRawSearchResult);
+        this.slQueryInput      = (EditText   ) findViewById(R.id.slQueryInput      );
+        this.progressIndicator = (ProgressBar) findViewById(R.id.progress_indicator);
 
         RepoListVM viewModel = new RepoListVM();
         viewModel.setDelegate(this);

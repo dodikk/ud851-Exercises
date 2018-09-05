@@ -49,20 +49,34 @@
         android:layout_marginRight="16dp"
         />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
 
-        <TextView
-            android:id="@+id/lblRawSearchResult"
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/progress_indicator"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:visibility="invisible" />
+
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="&lt;No Content Response Available&gt;"
-            android:textSize="18sp"
-            />
+            android:layout_marginTop="16dp">
 
-    </ScrollView>
-    
+
+            <TextView
+                android:id="@+id/lblRawSearchResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="18sp"
+                />
+
+        </ScrollView>
+
+    </FrameLayout>
+
 </LinearLayout>
